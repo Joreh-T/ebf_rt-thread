@@ -1,0 +1,86 @@
+variables:
+  #打包格式，支持zip和tar两种输出格式
+  FORMAT: zip
+  #打包所用的分支或者标签：origin/master表示打包主分支，
+  Branch_or_Tag: origin/master
+  #生成zip的名称
+  ZIP_NAME: ebf_rtthread_tutorial_code_1_
+  #NAS地址 数量不匹配需要删改PDF-files任务中的内容
+  NAS_URL1: /mnt/百度云对外发布资料/野火开源图书专栏/[野火]《RT-Thread内核实现与应用开发实战指南》系列/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL2: /mnt/百度云对外发布资料/STM32产品线/野火【F103开发板-MINI】光盘资料/A盘（资料盘）/1-程序源码_教程文档/5-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL3: /mnt/百度云对外发布资料/STM32产品线/野火【F103开发板-指南者】光盘资料/A盘（资料盘）/1-程序源码_教程文档/5-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL4: /mnt/百度云对外发布资料/STM32产品线/野火【F103开发板-霸道】光盘资料/A盘（资料盘）/1-程序源码_教程文档/5-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL5: /mnt/百度云对外发布资料/STM32产品线/野火【F407开发板-霸天虎】光盘资料/A盘（资料盘）/1-程序源码_教程文档/5-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL6: /mnt/百度云对外发布资料/STM32产品线/野火【F429开发板-挑战者】光盘资料/A盘（资料盘）/1-程序源码_教程文档/5-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL7: /mnt/百度云对外发布资料/STM32产品线/野火【F767开发板-挑战者】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL8: /mnt/百度云对外发布资料/STM32产品线/野火【H743开发板-Pro】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL9: /mnt/百度云对外发布资料/STM32产品线/野火【H743开发板-挑战者_V2】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL10: /mnt/百度云对外发布资料/STM32产品线/野火【H750开发板-Pro】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL11: /mnt/百度云对外发布资料/STM32产品线/STM32电机系列/野火【F103开发板-拂晓】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL12: /mnt/百度云对外发布资料/STM32产品线/STM32电机系列/野火【F407开发板-骄阳】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL13: /mnt/百度云对外发布资料/STM32产品线/STM32电机系列/野火【H743开发板-繁星】光盘资料/A盘（资料盘）/1-程序源码_教程文档/4-[野火]《RT-Thread内核实现与应用开发实战指南》/1-书籍配套程序/1-第一部分程序：从0到1教你写RT-Thread内核
+  NAS_URL14: /mnt/百度云对外发布资料/i.MX_RT产品线/野火【i.MX RT1052开发板】光盘资料/1-程序源码_教程文档/4-[野火]《uCOS-III内核实现与应用开发实战指南》系列/1-书籍配套程序/1-第一部分程序 ：从0到1教你写uCOS-III内核
+
+
+
+
+stages: # 分段
+  - pack
+
+code-pack:
+  tags:
+    - ENABLE
+  stage: pack
+  when: manual
+  script:
+    - now="`date +%Y%m%d`"
+    # 打包
+    - git archive --format=$FORMAT --output $ZIP_NAME$now.$FORMAT $Branch_or_Tag
+
+    #网盘同步，在不同的仓库中都需要修改
+    #注意：只在NAS_URL1中使用 -print > ；后面的地址使用  -print >>
+    #
+    #NAS_URL1
+    # 获取要延时删除的zip包列表
+    - find "$NAS_URL1" -path "$NAS_URL1/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print > /root/autodelate/temp/$ZIP_NAME$now.log
+    # 复制新的压缩包
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL1"
+    #NAS_URL2
+    - find "$NAS_URL2" -path "$NAS_URL2/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL2"
+    #NAS_URL3
+    - find "$NAS_URL3" -path "$NAS_URL3/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL3"
+    #NAS_URL4
+    - find "$NAS_URL4" -path "$NAS_URL4/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL4"
+    #NAS_URL5
+    - find "$NAS_URL5" -path "$NAS_URL5/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL5"
+    #NAS_URL6
+    - find "$NAS_URL6" -path "$NAS_URL6/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL6"
+    #NAS_URL7
+    - find "$NAS_URL7" -path "$NAS_URL7/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL7"
+    #NAS_URL8
+    - find "$NAS_URL8" -path "$NAS_URL8/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL8"
+    #NAS_URL9
+    - find "$NAS_URL9" -path "$NAS_URL9/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL9"
+    #NAS_URL10
+    - find "$NAS_URL10" -path "$NAS_URL10/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL10"
+    #NAS_URL11
+    - find "$NAS_URL11" -path "$NAS_URL11/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL11"
+    #NAS_URL12
+    - find "$NAS_URL12" -path "$NAS_URL12/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL12"
+    #NAS_URL13
+    - find "$NAS_URL13" -path "$NAS_URL13/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL13"
+    #NAS_URL14
+    - find "$NAS_URL14" -path "$NAS_URL14/$ZIP_NAME$now.$FORMAT" -prune -o -type f -name "*.$FORMAT" -print >> /root/autodelate/temp/$ZIP_NAME$now.log
+    - cp -f $ZIP_NAME$now.$FORMAT "$NAS_URL14"
